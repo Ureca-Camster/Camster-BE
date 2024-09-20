@@ -1,6 +1,7 @@
 package com.camster_be.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,6 +18,8 @@ public class Study {
 
     private String studyName;
     private String description;
+    // columnDefinition을 사용하여 emoji 컬럼의 charset과 collation을 설정
+    @Column(columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String emoji;
     private Boolean isPublic;
     private String studyPassword;
