@@ -8,33 +8,52 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/studies")  // 기본 경로 설정
+@RequestMapping("/studies")  // 기본 경로 설정
 @CrossOrigin("*")  // 모든 도메인에서의 요청 허용
 public class StudyController {
 
     @Autowired
     private StudyService studyService;
 
+    // 스터디 생성
     @PostMapping
     public Study createStudy(@RequestBody Study study) {
         return studyService.createStudy(study);
     }
 
+    // 전체 스터디 목록 조회
     @GetMapping
     public List<Study> getAllStudies() {
         return studyService.getAllStudies();
     }
 
-    @GetMapping("/{id}")
-    public Optional<Study> getStudyById(@PathVariable Long id) {
-        return studyService.getStudyById(id);
+    // 내 스터디 목록 조회 (예시: 특정 사용자의 스터디 목록)
+    @GetMapping("/mystudies")
+    public List<Study> getMyStudies(@RequestParam Long memberId) {
+        return studyService.getMyStudies(memberId);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteStudy(@PathVariable Long id) {
-        studyService.deleteStudy(id);
+    @GetMapping("/{studyId}")
+    public Optional<Study> getStudyById(@PathVariable("studyId") Long studyId) {
+        return studyService.getStudyById(studyId);
+    }
+
+
+    // 스터디 수정
+    @PutMapping("/{studyId}")
+    public Study updateStudy(@PathVariable Long studyId, @RequestBody Study study) {
+        return studyService.updateStudy(studyId, study);
+    }
+
+    // 스터디 탈퇴
+    @DeleteMapping("/{studyId}")
+    public void deleteStudy(@PathVariable Long studyId) {
+        studyService.deleteStudy(studyId);
+    }
+
+    // 스터디 가입
+    @PostMapping("/{studyId}")
+    public Study joinStudy(@PathVariable Long studyId, @RequestBody Long memberId) {
+        return studyService.joinStudy(studyId, memberId);
     }
 }
-
-
-
