@@ -10,4 +10,4 @@ git clone https://github.com/Ureca-Camster/Camster-BE.git
 
 ## ERD Preview
 
-![ERD Image](https://i.ibb.co/s3CkGYy/camster.png "")
+![ERD Image](./camster-erd-image.png "")
