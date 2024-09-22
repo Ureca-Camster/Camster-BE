@@ -15,10 +15,17 @@ public class Member {
 	
 	private String nickname;
 	private String memberPassword;
+	private String email;	
 	private Integer goalTime;
 	private Integer todayTime;
 	
 	//Getters and Setters
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	public Long getMemberId() {
 		return memberId;
 	}
