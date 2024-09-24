@@ -2,7 +2,7 @@ package com.camster_be.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.camster_be.entity.Comment;
+import com.camster_be.domain.board.entity.Comment;
 import com.camster_be.repository.CommentRepository;
 import java.util.List;
 import java.util.Optional;

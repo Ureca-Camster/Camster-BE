@@ -2,7 +2,7 @@ package com.camster_be.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.camster_be.entity.Comment;
+import com.camster_be.domain.board.entity.Comment;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long>{

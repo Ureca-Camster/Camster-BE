@@ -1,6 +1,6 @@
 package com.camster_be.service;
 
-import com.camster_be.entity.Study;
+import com.camster_be.domain.study.entity.Study;
 import com.camster_be.repository.StudyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,12 +37,12 @@ public class StudyService {
     // 스터디 수정
     public Study updateStudy(Long studyId, Study study) {
         Optional<Study> existingStudy = studyRepository.findById(studyId);
-        if (existingStudy.isPresent()) {
-            Study updatedStudy = existingStudy.get();
-            updatedStudy.setStudyName(study.getStudyName());  // 수정할 필드를 설정
-            updatedStudy.setDescription(study.getDescription());
-            return studyRepository.save(updatedStudy);
-        }
+//        if (existingStudy.isPresent()) {
+//            Study updatedStudy = existingStudy.get();
+//            updatedStudy.setStudyName(study.getStudyName());  // 수정할 필드를 설정
+//            updatedStudy.setDescription(study.getDescription());
+//            return studyRepository.save(updatedStudy);
+//        }
         return null;  // 예외 처리 추가 가능
     }
 

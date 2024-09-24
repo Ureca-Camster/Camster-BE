@@ -2,7 +2,7 @@ package com.camster_be.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.camster_be.entity.Comment;
+import com.camster_be.domain.board.entity.Comment;
 import com.camster_be.service.CommentService;
 import java.util.List;
 import java.util.Optional;
