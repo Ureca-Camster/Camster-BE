@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/boards")  // 기본 경로 설정
+@RequestMapping("/boards")  // 기본 경로 설정
 @CrossOrigin("*")  // 모든 도메인에서의 요청 허용
 public class BoardController {
 
@@ -20,9 +20,9 @@ public class BoardController {
         return boardService.createBoard(board);
     }
 
-    @GetMapping
-    public List<Board> getAllBoards() {
-        return boardService.getAllBoards();
+    @GetMapping("/study/{studyId}")
+    public List<Board> getAllBoards(@PathVariable("studyId") Long studyId) {
+    	return boardService.getBoardsByStudyId(studyId);
     }
 
     @GetMapping("/{id}")
