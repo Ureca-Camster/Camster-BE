@@ -45,6 +45,7 @@ public class Board {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	
 	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
