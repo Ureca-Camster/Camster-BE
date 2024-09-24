@@ -2,12 +2,13 @@ package com.camster_be.entity;
 
 import java.util.Date;
 
+import org.hibernate.annotations.CreationTimestamp;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,7 +20,9 @@ public class Board {
 
     private String title;
     private String content;
-    private Date createDate;
+    
+    @CreationTimestamp
+    private LocalDateTime  createDate;
     private Long memberId;
     private Long studyId;
     
@@ -42,10 +45,10 @@ public class Board {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public Date getCreateDate() {
+	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
-	public void setCreateDate(Date createDate) {
+	public void setCreateDate(LocalDateTime createDate) {
 		this.createDate = createDate;
 	}
 	public Long getMemberId() {
