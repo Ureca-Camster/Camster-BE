@@ -17,8 +17,9 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
-    public List<Board> getAllBoards() {
-        return boardRepository.findAll();
+ // studyId에 해당하는 게시물 목록만 반환
+    public List<Board> getBoardsByStudyId(Long studyId) {
+        return boardRepository.findByStudyId(studyId);
     }
 
     public Optional<Board> getBoardById(Long id) {
