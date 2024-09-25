@@ -2,6 +2,7 @@ package com.camster_be.domain.member.controller;
 
 import com.camster_be.domain.member.dto.request.MemberUpdateRequest;
 import com.camster_be.domain.member.dto.request.RegisterRequest;
+import com.camster_be.domain.member.dto.response.MemberResponse;
 import com.camster_be.domain.member.entity.Member;
 import com.camster_be.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +28,12 @@ public class MemberController {
     }
 
     @GetMapping
-    public Member getMember() {
+    public MemberResponse getMember() {
         return memberService.getMember();
     }
 
     @PutMapping
-    public Member updateMember(@RequestBody MemberUpdateRequest request) {
+    public MemberResponse updateMember(@RequestBody MemberUpdateRequest request) {
         return memberService.updateMember(request);
     }
 

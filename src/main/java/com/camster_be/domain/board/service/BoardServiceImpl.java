@@ -31,7 +31,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<Board> getAllBoards(Long studyId) {
-        return boardRepository.findByStudyId(studyId);
+        return boardRepository.findAllByStudyId(studyId);
     }
 
     @Override

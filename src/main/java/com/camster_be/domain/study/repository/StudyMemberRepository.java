@@ -1,5 +1,6 @@
 package com.camster_be.domain.study.repository;
 
+import com.camster_be.domain.study.dto.response.StudyMemberListResponse;
 import com.camster_be.domain.study.entity.StudyMember;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,7 @@ public interface StudyMemberRepository extends JpaRepository<StudyMember, Long> 
     List<Long> findStudyIdsNotJoinedByMemberId(@Param("memberId") Long memberId);
 
     void deleteByStudyIdAndMemberId(Long studyId, Long memberId);
+
+    // 스터디 아이디로 스터디 맴버 목록 조회
+    List<StudyMember> findByStudyId(Long studyId);
 }

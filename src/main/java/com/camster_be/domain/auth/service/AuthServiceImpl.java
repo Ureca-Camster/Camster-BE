@@ -2,9 +2,11 @@ package com.camster_be.domain.auth.service;
 
 import com.camster_be.domain.auth.dto.CustomUserDetails;
 import com.camster_be.domain.auth.dto.request.LoginRequest;
+import com.camster_be.domain.auth.dto.response.LoginResponse;
 import com.camster_be.domain.auth.jwt.JWTUtil;
 import com.camster_be.domain.member.entity.Member;
 import com.camster_be.domain.member.repository.MemberRepository;
+import com.camster_be.domain.util.SecurityUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.Cookie;
@@ -42,7 +44,7 @@ public class AuthServiceImpl implements AuthService {
     private Long refreshTime;
 
     @Override
-    public void login(LoginRequest loginRequest, HttpServletResponse response) {
+    public LoginResponse login(LoginRequest loginRequest, HttpServletResponse response) {
         log.info("Login request received for email: {}", loginRequest.email());
 
         Member member = memberRepository.findByEmail(loginRequest.email()).orElseThrow();
@@ -66,6 +68,8 @@ public class AuthServiceImpl implements AuthService {
             log.error("Authentication failed: {}", e.getMessage());
             throw new BadCredentialsException("Invalid email or password");
         }
+
+        return LoginResponse.of(member);
     }
 
     private Authentication authenticateUser(Long memberId, String password) {
@@ -81,13 +85,10 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
-            // CustomUserDetails로 캐스팅하여 사용자 정보 추출
-            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-            Long memberId = userDetails.getMemberId(); // 사용자 ID 추출
+            Long memberId = SecurityUtils.getMemberId(); // 사용자 ID 추출
 
             // 로그아웃 처리를 위해 DB 및 Redis에서 토큰 삭제
             jwtTokenService.deleteRefreshToken(memberId);
-            jwtTokenService.deleteAccessToken(memberId);
         }
 
         // SecurityContext를 비워서 로그아웃 처리

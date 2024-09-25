@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    List<Board> findByStudyId(Long studyId);
+    List<Board> findAllByStudyId(Long studyId);
 
 }

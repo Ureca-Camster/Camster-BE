@@ -1,16 +1,15 @@
 package com.camster_be.domain.study.entity;
 
+import com.camster_be.domain.member.entity.Member;
 import com.camster_be.domain.study.dto.request.StudyCreateRequest;
 import com.camster_be.domain.study.dto.request.StudyUpdateRequest;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,16 +28,16 @@ public class Study {
     private String emoji;
     private Boolean isPublic;
     private String studyPassword;
-    private Long masterId;
+    private Long leaderId;
     private Boolean isLive;
 
-    public Study(StudyCreateRequest request, Long masterId) {
+    public Study(StudyCreateRequest request, Long leaderId) {
         this.studyName = request.studyName();
         this.description = request.description();
         this.emoji = request.emoji();
         this.isPublic = request.isPublic();
         this.studyPassword = request.studyPassword();
-        this.masterId = masterId;
+        this.leaderId = leaderId;
         this.isLive = false;
     }
 

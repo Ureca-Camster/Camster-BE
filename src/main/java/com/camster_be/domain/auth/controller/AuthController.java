@@ -1,6 +1,7 @@
 package com.camster_be.domain.auth.controller;
 
 import com.camster_be.domain.auth.dto.request.LoginRequest;
+import com.camster_be.domain.auth.dto.response.LoginResponse;
 import com.camster_be.domain.auth.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,26 +24,21 @@ public class AuthController {
 
     private final AuthService authService;
 
-
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
-        authService.login(loginRequest, response);
-
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+        LoginResponse loginResponse = authService.login(loginRequest, response);
+        return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
     }
 
-    @Transactional
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
         authService.logout(request, response);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/reissue")
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
         authService.reissue(request, response);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

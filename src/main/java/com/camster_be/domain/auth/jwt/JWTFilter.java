@@ -40,6 +40,7 @@ public class JWTFilter extends OncePerRequestFilter {
             Optional<Cookie> accessTokenCookie = extractCookie(request, "access");
             Optional<Cookie> refreshTokenCookie = extractCookie(request, "refresh");
 
+            //로그인 된 유저
             if (accessTokenCookie.isPresent()) {
                 String accessToken = accessTokenCookie.get().getValue();
                 processAccessToken(accessToken, refreshTokenCookie, response);

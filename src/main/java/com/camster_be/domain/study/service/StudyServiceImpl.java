@@ -1,8 +1,13 @@
 package com.camster_be.domain.study.service;
 
+import com.camster_be.domain.member.entity.Member;
 import com.camster_be.domain.member.repository.MemberRepository;
 import com.camster_be.domain.study.dto.request.StudyCreateRequest;
 import com.camster_be.domain.study.dto.request.StudyUpdateRequest;
+import com.camster_be.domain.study.dto.response.MyStudyResponse;
+import com.camster_be.domain.study.dto.response.NotMyStudyResponse;
+import com.camster_be.domain.study.dto.response.StudyDetailResponse;
+import com.camster_be.domain.study.dto.response.StudyMemberListResponse;
 import com.camster_be.domain.study.entity.Study;
 import com.camster_be.domain.study.entity.StudyMember;
 import com.camster_be.domain.study.repository.StudyMemberRepository;
@@ -23,47 +28,61 @@ public class StudyServiceImpl implements StudyService {
 
     private final StudyRepository studyRepository;
     private final StudyMemberRepository studyMemberRepository;
+    private final MemberRepository memberRepository;
 
     @Override
-    public Study createStudy(StudyCreateRequest request) {
+    public void createStudy(StudyCreateRequest request) {
         Long memberId = SecurityUtils.getMemberId();
         Study study = new Study(request, memberId);
         studyRepository.save(study);
-        return study;
     }
 
     @Override
-    public List<Study> getAllStudies() {
+    public List<NotMyStudyResponse> getAllStudies() {
         Long memberId = SecurityUtils.getMemberId();
         List<Long> studyIdsByMemberId = studyMemberRepository.findStudyIdsNotJoinedByMemberId(memberId);
-        List<Study> studies = new ArrayList<>();
+        List<NotMyStudyResponse> studies = new ArrayList<>();
         for (Long studyId : studyIdsByMemberId) {
-            studies.add(studyRepository.findById(studyId).orElse(null));
+            studies.add(NotMyStudyResponse.of(studyRepository.findById(studyId).orElse(null)));
         }
         return studies;
     }
 
     @Override
-    public List<Study> getMyStudies() {
+    public List<MyStudyResponse> getMyStudies() {
         Long memberId = SecurityUtils.getMemberId();
         List<Long> studyIdsByMemberId = studyMemberRepository.findStudyIdsByMemberId(memberId);
-        List<Study> studies = new ArrayList<>();
+        List<MyStudyResponse> studies = new ArrayList<>();
         for (Long studyId : studyIdsByMemberId) {
-            studies.add(studyRepository.findById(studyId).orElse(null));
+            studies.add( MyStudyResponse.of(studyRepository.findById(studyId).orElse(null)));
         }
         return studies;
     }
 
     @Override
-    public Optional<Study> getStudyById(Long studyId) {
-        return studyRepository.findById(studyId);
+    public StudyDetailResponse getStudyById(Long studyId) {
+
+        // 스터디 찾기
+        Study study = studyRepository.findById(studyId).orElse(null);
+
+        // 스터디 멤버 찾기
+        List<StudyMember> studyMemberLists = studyMemberRepository.findByStudyId(studyId);
+
+        List<StudyMemberListResponse> memberList = new ArrayList<>();
+
+        // 스터디 멤버 이름 찾기
+        for (StudyMember studyMemberList : studyMemberLists) {
+            Member member = memberRepository.findById(studyMemberList.getMemberId()).orElse(null);
+            memberList.add( StudyMemberListResponse.of(member));
+        }
+
+        return StudyDetailResponse.of(study, memberList);
     }
 
     @Override
-    public Study updateStudy(Long studyId, StudyUpdateRequest request) {
+    public void updateStudy(Long studyId, StudyUpdateRequest request) {
         Study study = studyRepository.findById(studyId).orElseThrow();
         study.updateStudy(request);
-        return study;
     }
 
     @Override
