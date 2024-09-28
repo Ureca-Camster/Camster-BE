@@ -1,6 +1,6 @@
 package com.camster_be.domain.member.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -14,7 +14,7 @@ public class Record {
 	@Column(name = "record_id")
     private Long id;
     
-    private Date recordDate;
+    private LocalDate recordDate;
     private Integer studyTime;
 
 	@ManyToOne

@@ -1,30 +1,17 @@
 package com.camster_be.domain.member.service;
 
+import com.camster_be.domain.member.dto.request.RecordRequest;
+import com.camster_be.domain.member.dto.response.RankResponse;
+import com.camster_be.domain.member.dto.response.RecordResponse;
+import com.camster_be.domain.member.entity.Record;
+
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.stereotype.Service;
-import com.camster_be.domain.member.entity.Record;  // 엔티티 경로에 맞게 수정
-import com.camster_be.domain.member.repository.RecordRepository;
+public interface RecordService {
 
-@Service
-public class RecordService {
+    Record createRecord(Record record);
 
-    private RecordRepository recordRepository;
+    List<RecordResponse> getRecords(RecordRequest request);
 
-    public Record createRecord(Record record) {
-        return recordRepository.save(record);
-    }
-
-    public List<Record> getAllRecords() {
-        return recordRepository.findAll();
-    }
-
-    public Optional<Record> getRecordById(Long id) {
-        return recordRepository.findById(id);
-    }
-
-    public void deleteRecord(Long id) {
-        recordRepository.deleteById(id);
-    }
+    List<RankResponse> getRank();
 }
