@@ -42,6 +42,14 @@ public class RecordServiceImpl implements RecordService {
     @Override
     public List<RankResponse> getRank() {
         LocalDate yesterday = LocalDate.now().minusDays(1);
-        return List.of();
+        // 어제 날짜에 해당하는 상위 3명의 기록
+        List<Record> topRecords = recordRepository.findTop3ByRecordDateOrderByStudyTimeDescIdAsc(yesterday);
+
+        return topRecords.stream()
+                .map(record -> new RankResponse(
+                        record.getMember().getNickname(),  // Member에서 nickname 가져옴
+                        record.getStudyTime()  // Record에서 studyTime 가져옴
+                ))
+                .collect(Collectors.toList());  // 리스트로
     }
 }

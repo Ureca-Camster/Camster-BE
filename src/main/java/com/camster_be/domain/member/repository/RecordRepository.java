@@ -9,5 +9,9 @@ import java.util.List;
 
 @Repository
 public interface RecordRepository extends JpaRepository<Record, Long>{
+
     List<Record> findByMemberIdAndRecordDateBetween(Long memberId, LocalDate startDate, LocalDate endDate);
+
+    // 어제 날짜의 레코드를 studyTime 기준으로 내림차순 정렬하고, studyTime이 동일하면 생성 순서대로 정렬
+    List<Record> findTop3ByRecordDateOrderByStudyTimeDescIdAsc(LocalDate recordDate);
 }
