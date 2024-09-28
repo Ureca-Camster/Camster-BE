@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -37,7 +38,17 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public List<NotMyStudyResponse> getAllStudies() {
         Long memberId = SecurityUtils.getMemberId();
-        List<Long> studyIdsByMemberId = studyMemberRepository.findStudyIdsNotJoinedByMemberId(memberId);
+        List<Long> studyIdsByMemberId = new ArrayList<>();
+        if (memberId == null) {
+            // not logged in
+            studyIdsByMemberId = studyRepository.findAll().stream()
+                    .map(Study::getId) // Study 객체에서 ID만 추출
+                    .collect(Collectors.toList());
+        } else {
+            studyIdsByMemberId = studyMemberRepository.findStudyIdsNotJoinedByMemberId(memberId);
+        }
+
+
         List<NotMyStudyResponse> studies = new ArrayList<>();
         for (Long studyId : studyIdsByMemberId) {
             studies.add(NotMyStudyResponse.of(studyRepository.findById(studyId).orElse(null)));
