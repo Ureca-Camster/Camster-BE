@@ -5,14 +5,12 @@ import com.camster_be.domain.study.dto.request.StudyUpdateRequest;
 import com.camster_be.domain.study.dto.response.MyStudyResponse;
 import com.camster_be.domain.study.dto.response.NotMyStudyResponse;
 import com.camster_be.domain.study.dto.response.StudyDetailResponse;
-import com.camster_be.domain.study.entity.Study;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface StudyService {
 
-    void createStudy(StudyCreateRequest request);
+    Long createStudy(StudyCreateRequest request);
 
     List<NotMyStudyResponse> getAllStudies();
 

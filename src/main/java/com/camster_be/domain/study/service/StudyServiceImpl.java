@@ -4,10 +4,7 @@ import com.camster_be.domain.member.entity.Member;
 import com.camster_be.domain.member.repository.MemberRepository;
 import com.camster_be.domain.study.dto.request.StudyCreateRequest;
 import com.camster_be.domain.study.dto.request.StudyUpdateRequest;
-import com.camster_be.domain.study.dto.response.MyStudyResponse;
-import com.camster_be.domain.study.dto.response.NotMyStudyResponse;
-import com.camster_be.domain.study.dto.response.StudyDetailResponse;
-import com.camster_be.domain.study.dto.response.StudyMemberListResponse;
+import com.camster_be.domain.study.dto.response.*;
 import com.camster_be.domain.study.entity.Study;
 import com.camster_be.domain.study.entity.StudyMember;
 import com.camster_be.domain.study.repository.StudyMemberRepository;
@@ -19,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -31,10 +27,11 @@ public class StudyServiceImpl implements StudyService {
     private final MemberRepository memberRepository;
 
     @Override
-    public void createStudy(StudyCreateRequest request) {
+    public Long createStudy(StudyCreateRequest request) {
         Long memberId = SecurityUtils.getMemberId();
         Study study = new Study(request, memberId);
         studyRepository.save(study);
+        return study.getId();
     }
 
     @Override

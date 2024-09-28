@@ -7,10 +7,8 @@ import com.camster_be.domain.study.dto.response.NotMyStudyResponse;
 import com.camster_be.domain.study.dto.response.StudyDetailResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.camster_be.domain.study.entity.Study;
 import com.camster_be.domain.study.service.StudyService;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/studies")  // 기본 경로 설정
@@ -22,8 +20,8 @@ public class StudyController {
 
     // 스터디 생성
     @PostMapping
-    public void createStudy(@RequestBody StudyCreateRequest request) {
-        studyService.createStudy(request);
+    public Long createStudy(@RequestBody StudyCreateRequest request) {
+        return studyService.createStudy(request);
     }
 
     // 전체 스터디 목록 조회
@@ -40,7 +38,7 @@ public class StudyController {
 
     // 상세조회
     @GetMapping("/{studyId}")
-    public Optional<StudyDetailResponse> getStudyById(@PathVariable("studyId") Long studyId) {
+    public StudyDetailResponse getStudyById(@PathVariable("studyId") Long studyId) {
         return studyService.getStudyById(studyId);
     }
 
