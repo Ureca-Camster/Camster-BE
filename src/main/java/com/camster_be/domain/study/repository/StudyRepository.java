@@ -9,7 +9,4 @@ import com.camster_be.domain.study.entity.Study;
 @Repository
 public interface StudyRepository extends JpaRepository<Study, Long>{
 
-	// masterId로 스터디를 찾는 메서드 정의
-    List<Study> findByMasterId(Long masterId);
-
 }
