@@ -59,7 +59,7 @@ public class StudyController {
     @PutMapping("/{studyId}")
     public ResponseEntity<Void> updateStudy(@PathVariable Long studyId, @RequestBody StudyUpdateRequest request) {
         studyService.updateStudy(studyId, request);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{studyId}")

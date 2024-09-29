@@ -42,21 +42,23 @@ public class Study {
     }
 
     public void updateStudy(StudyUpdateRequest request) {
-        if (!StringUtils.hasText(request.studyName())) {
+        if (StringUtils.hasText(request.studyName())) {
             this.studyName = request.studyName();
         }
 
-        if (!StringUtils.hasText(request.description())) {
+        if (StringUtils.hasText(request.description())) {
             this.description = request.description();
         }
 
-        if (!StringUtils.hasText(request.emoji())) {
+        if (StringUtils.hasText(request.emoji())) {
             this.emoji = request.emoji();
         }
 
-        if (!StringUtils.hasText(request.studyPassword())) {
+        this.isPublic = request.isPublic();
+        if (!request.isPublic() && StringUtils.hasText(request.studyPassword())) {
             this.studyPassword = request.studyPassword();
-            this.isPublic = request.isPublic();
+        } else if (request.isPublic()) {
+            this.studyPassword = null;  // 공개 스터디인 경우 비밀번호를 null로 설정
         }
     }
 }
