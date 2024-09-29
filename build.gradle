@@ -50,6 +50,9 @@ dependencies {
 
     //Redis설정
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // https://mvnrepository.com/artifact/io.openvidu/openvidu-java-client
+    implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.30.0'
 }
 
 tasks.named('test') {
