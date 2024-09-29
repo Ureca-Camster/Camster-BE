@@ -11,6 +11,7 @@ import com.camster_be.domain.study.repository.StudyMemberRepository;
 import com.camster_be.domain.study.repository.StudyRepository;
 import com.camster_be.domain.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -31,14 +33,16 @@ public class StudyServiceImpl implements StudyService {
     public Long createStudy(StudyCreateRequest request) {
         Long memberId = SecurityUtils.getMemberId();
         Study study = new Study(request, memberId);
-        studyRepository.save(study);
-        return study.getId();
+        Study saveStudy = studyRepository.save(study);
+        StudyMember saveStudyMember = new StudyMember(memberId, saveStudy.getId());
+        studyMemberRepository.save(saveStudyMember);
+        return saveStudy.getId();
     }
 
     @Override
     public List<NotMyStudyResponse> getAllStudies() {
         Long memberId = SecurityUtils.getMemberId();
-        List<Long> studyIdsByMemberId = new ArrayList<>();
+        List<Long> studyIdsByMemberId;
         if (memberId == null) {
             // not logged in
             studyIdsByMemberId = studyRepository.findAll().stream()
@@ -62,7 +66,7 @@ public class StudyServiceImpl implements StudyService {
         List<Long> studyIdsByMemberId = studyMemberRepository.findStudyIdsByMemberId(memberId);
         List<MyStudyResponse> studies = new ArrayList<>();
         for (Long studyId : studyIdsByMemberId) {
-            studies.add( MyStudyResponse.of(studyRepository.findById(studyId).orElse(null)));
+            studies.add(MyStudyResponse.of(studyRepository.findById(studyId).orElse(null)));
         }
         return studies;
     }
@@ -81,7 +85,7 @@ public class StudyServiceImpl implements StudyService {
         // 스터디 멤버 이름 찾기
         for (StudyMember studyMemberList : studyMemberLists) {
             Member member = memberRepository.findById(studyMemberList.getMemberId()).orElse(null);
-            memberList.add( StudyMemberListResponse.of(member));
+            memberList.add(StudyMemberListResponse.of(member));
         }
 
         return StudyDetailResponse.of(study, memberList);
@@ -100,10 +104,18 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public void joinStudy(Long studyId) {
+    public void joinStudy(Long studyId, String password) {
         Long memberId = SecurityUtils.getMemberId();
         StudyMember studyMember = new StudyMember(memberId, studyId);
+
+        Study findStudy = studyRepository.findById(studyId).orElseThrow();
+
+        if (!findStudy.getStudyPassword().equals(password)) {
+            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+        }
+
         studyMemberRepository.save(studyMember);
+
     }
 
 }

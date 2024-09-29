@@ -1,63 +1,77 @@
 package com.camster_be.domain.study.controller;
 
 import com.camster_be.domain.study.dto.request.StudyCreateRequest;
+import com.camster_be.domain.study.dto.request.StudyJoinRequest;
 import com.camster_be.domain.study.dto.request.StudyUpdateRequest;
 import com.camster_be.domain.study.dto.response.MyStudyResponse;
 import com.camster_be.domain.study.dto.response.NotMyStudyResponse;
 import com.camster_be.domain.study.dto.response.StudyDetailResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.camster_be.domain.study.service.StudyService;
 import java.util.List;
 
+@Slf4j
 @RestController
-@RequestMapping("/studies")  // 기본 경로 설정
-@CrossOrigin("*")  // 모든 도메인에서의 요청 허용
+@RequestMapping("/studies")
+@CrossOrigin("*")
+@RequiredArgsConstructor
 public class StudyController {
 
-    @Autowired
-    private StudyService studyService;
+    private final StudyService studyService;
 
-    // 스터디 생성
     @PostMapping
-    public Long createStudy(@RequestBody StudyCreateRequest request) {
-        return studyService.createStudy(request);
+    public ResponseEntity<Long> createStudy(@RequestBody StudyCreateRequest request) {
+        Long studyId = studyService.createStudy(request);
+
+        log.info("create requests {}", request);
+
+        return ResponseEntity.status(HttpStatus.OK).body(studyId);
     }
 
-    // 전체 스터디 목록 조회
     @GetMapping
-    public List<NotMyStudyResponse> getAllStudies() {
-        return studyService.getAllStudies();
+    public ResponseEntity<List<NotMyStudyResponse>> getAllStudies() {
+        List<NotMyStudyResponse> studies = studyService.getAllStudies();
+
+        log.info("all study : {}" , studies.toString());
+
+        return ResponseEntity.ok(studies);
     }
 
-    // 내 스터디 목록 조회 (예시: 특정 사용자의 스터디 목록)
     @GetMapping("/mystudies")
-    public List<MyStudyResponse> getMyStudies() {
-        return studyService.getMyStudies();
+    public ResponseEntity<List<MyStudyResponse>> getMyStudies() {
+        List<MyStudyResponse> myStudies = studyService.getMyStudies();
+
+        log.info("my study : {} ", myStudies.toString());
+
+        return ResponseEntity.ok(myStudies);
     }
 
-    // 상세조회
     @GetMapping("/{studyId}")
-    public StudyDetailResponse getStudyById(@PathVariable("studyId") Long studyId) {
-        return studyService.getStudyById(studyId);
+    public ResponseEntity<StudyDetailResponse> getStudyById(@PathVariable("studyId") Long studyId) {
+        StudyDetailResponse study = studyService.getStudyById(studyId);
+        return ResponseEntity.ok(study);
     }
 
-    // 스터디 수정
     @PutMapping("/{studyId}")
-    public void updateStudy(@PathVariable Long studyId, @RequestBody StudyUpdateRequest request) {
+    public ResponseEntity<Void> updateStudy(@PathVariable Long studyId, @RequestBody StudyUpdateRequest request) {
         studyService.updateStudy(studyId, request);
+        return ResponseEntity.noContent().build();
     }
 
-    // 스터디 탈퇴
     @DeleteMapping("/{studyId}")
-    public void deleteStudy(@PathVariable Long studyId) {
+    public ResponseEntity<Void> deleteStudy(@PathVariable Long studyId) {
         studyService.deleteStudy(studyId);
+        return ResponseEntity.noContent().build();
     }
 
-    // 스터디 가입
     @PostMapping("/{studyId}")
-    public void joinStudy(@PathVariable Long studyId) {
-        studyService.joinStudy(studyId);
+    public ResponseEntity<Void> joinStudy(@PathVariable Long studyId, @RequestBody StudyJoinRequest studyJoinRequest) {
+        log.info("join study : {} ", studyJoinRequest.studyPassword());
+        studyService.joinStudy(studyId, studyJoinRequest.studyPassword());
+        return ResponseEntity.ok().build();
     }
-
 }

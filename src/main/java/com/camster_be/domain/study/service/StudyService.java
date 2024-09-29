@@ -22,5 +22,5 @@ public interface StudyService {
 
     void deleteStudy(Long studyId);
 
-    void joinStudy(Long studyId);
+    void joinStudy(Long studyId, String password);
 }
