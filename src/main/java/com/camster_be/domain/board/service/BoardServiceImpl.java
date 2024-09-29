@@ -28,8 +28,7 @@ public class BoardServiceImpl implements BoardService {
         Long memberId = SecurityUtils.getMemberId();
         Member member = memberRepository.findById(memberId).orElseThrow();
         Board board = new Board(request, memberId, studyId, member.getNickname());
-        boardRepository.save(board);
-        return board;
+        return boardRepository.save(board);
     }
 
     @Override
