@@ -1,9 +1,9 @@
 package com.camster_be.domain.member.service;
 
-import com.camster_be.domain.member.dto.request.RecordRequest;
 import com.camster_be.domain.member.dto.response.RankResponse;
 import com.camster_be.domain.member.dto.response.RecordResponse;
 import com.camster_be.domain.util.SecurityUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.camster_be.domain.member.entity.Record;  // 엔티티 경로에 맞게 수정
 import com.camster_be.domain.member.repository.RecordRepository;
@@ -13,18 +13,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class RecordServiceImpl implements RecordService {
 
-    private RecordRepository recordRepository;
+    private final RecordRepository recordRepository;
 
+    @Override
     public Record createRecord(Record record) {
         return recordRepository.save(record);
     }
 
-    public List<RecordResponse> getRecords(RecordRequest request) {
+    @Override
+    public List<RecordResponse> getRecords(int year, int month) {
         Long memberId = SecurityUtils.getMemberId();  // 현재 로그인된 사용자의 ID를 가져옴
-        Integer year = request.year();  // 요청에서 연도를 가져옴
-        Integer month = request.month();  // 요청에서 월을 가져옴
 
         // 해당 연월의 첫 번째 날과 마지막 날을 계산
         LocalDate startDate = LocalDate.of(year, month, 1);

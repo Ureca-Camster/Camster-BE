@@ -1,14 +1,12 @@
 package com.camster_be.domain.member.controller;
 
-import com.camster_be.domain.member.dto.request.RecordRequest;
 import com.camster_be.domain.member.dto.response.RankResponse;
 import com.camster_be.domain.member.dto.response.RecordResponse;
 import com.camster_be.domain.member.service.RecordService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,11 +15,13 @@ import java.util.List;
 @RequestMapping("/records")
 public class RecordController {
 
+    private static final Logger log = LoggerFactory.getLogger(RecordController.class);
     private final RecordService recordService;
 
-    @GetMapping("")
-    public List<RecordResponse> getRecords(@RequestBody RecordRequest request) {
-        return recordService.getRecords(request);
+    @GetMapping
+    public List<RecordResponse> getRecords(@RequestParam int year, @RequestParam int month) {
+        log.info("getRecords year={}, month={}", year, month);
+        return recordService.getRecords(year, month);
     }
 
     @GetMapping("/rank")
