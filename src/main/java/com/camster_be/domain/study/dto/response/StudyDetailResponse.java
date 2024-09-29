@@ -12,7 +12,6 @@ public record StudyDetailResponse(
         Boolean isPublic,
         String studyPassword,
         Long leaderId,
-        Boolean isLive,
         List<StudyMemberListResponse> members
 ) {
     public static StudyDetailResponse of(Study study, List<StudyMemberListResponse> members) {
@@ -24,7 +23,6 @@ public record StudyDetailResponse(
                 study.getIsPublic(),
                 study.getStudyPassword(),
                 study.getLeaderId(),
-                study.getIsLive(),
                 members
         );
     }

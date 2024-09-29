@@ -29,7 +29,6 @@ public class Study {
     private Boolean isPublic;
     private String studyPassword;
     private Long leaderId;
-    private Boolean isLive;
 
     public Study(StudyCreateRequest request, Long leaderId) {
         this.studyName = request.studyName();
@@ -38,7 +37,6 @@ public class Study {
         this.isPublic = request.isPublic();
         this.studyPassword = request.studyPassword();
         this.leaderId = leaderId;
-        this.isLive = false;
     }
 
     public void updateStudy(StudyUpdateRequest request) {
