@@ -4,6 +4,7 @@ import com.camster_be.domain.board.dto.request.BoardCreateRequest;
 import com.camster_be.domain.board.dto.request.BoardUpdateRequest;
 import com.camster_be.domain.board.entity.Board;
 import com.camster_be.domain.board.repository.BoardRepository;
+import com.camster_be.domain.member.entity.Member;
 import com.camster_be.domain.member.repository.MemberRepository;
 import com.camster_be.domain.study.repository.StudyRepository;
 import com.camster_be.domain.util.SecurityUtils;
@@ -20,11 +21,13 @@ import java.util.Optional;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public Board createBoard(Long studyId, BoardCreateRequest request) {
         Long memberId = SecurityUtils.getMemberId();
-        Board board = new Board(request, memberId, studyId);
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        Board board = new Board(request, memberId, studyId, member.getNickname());
         boardRepository.save(board);
         return board;
     }

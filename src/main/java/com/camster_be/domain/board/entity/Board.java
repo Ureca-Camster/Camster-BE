@@ -25,13 +25,15 @@ public class Board {
     private LocalDate createDate;
     private Long memberId;
     private Long studyId;
+    private String nickname;
 
-    public Board(BoardCreateRequest request, Long memberId, Long studyId) {
+    public Board(BoardCreateRequest request, Long memberId, Long studyId, String nickname) {
         this.title = request.title();
         this.content = request.content();
         this.createDate = LocalDate.now();
         this.memberId = memberId;
         this.studyId = studyId;
+        this.nickname = nickname;
     }
 
     public void updateBoard(BoardUpdateRequest request) {
