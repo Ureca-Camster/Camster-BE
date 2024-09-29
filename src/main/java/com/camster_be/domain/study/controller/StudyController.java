@@ -65,7 +65,7 @@ public class StudyController {
     @DeleteMapping("/{studyId}")
     public ResponseEntity<Void> deleteStudy(@PathVariable Long studyId) {
         studyService.deleteStudy(studyId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{studyId}")

@@ -8,8 +8,10 @@ import com.camster_be.domain.study.entity.Study;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
+@Slf4j
 @Entity
 @Table(name = "Board")
 @Getter
@@ -37,10 +39,10 @@ public class Board {
     }
 
     public void updateBoard(BoardUpdateRequest request) {
-        if (!StringUtils.hasText(request.title())) {
+        if (StringUtils.hasText(request.title())) {
             this.title = request.title();
         }
-        if (!StringUtils.hasText(request.content())) {
+        if (StringUtils.hasText(request.content())) {
             this.content = request.content();
         }
     }

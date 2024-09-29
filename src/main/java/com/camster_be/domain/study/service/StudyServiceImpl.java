@@ -110,7 +110,7 @@ public class StudyServiceImpl implements StudyService {
 
         Study findStudy = studyRepository.findById(studyId).orElseThrow();
 
-        if (!findStudy.getStudyPassword().equals(password)) {
+        if (findStudy.getStudyPassword() != null && !findStudy.getStudyPassword().equals(password)) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
 
