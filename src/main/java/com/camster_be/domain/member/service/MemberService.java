@@ -16,4 +16,5 @@ public interface MemberService {
 
     void updateTodayTime(Integer todayTime);
 
+    Integer getTodayTime();
 }

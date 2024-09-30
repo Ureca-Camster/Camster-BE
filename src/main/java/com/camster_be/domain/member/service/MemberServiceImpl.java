@@ -63,4 +63,11 @@ public class MemberServiceImpl implements MemberService {
         member.updateTodayTime(todayTime);
     }
 
+    @Override
+    public Integer getTodayTime() {
+        Long memberId = SecurityUtils.getMemberId();
+        Member member = memberRepository.findById(memberId).orElse(null);
+        return member.getTodayTime();
+    }
+
 }
