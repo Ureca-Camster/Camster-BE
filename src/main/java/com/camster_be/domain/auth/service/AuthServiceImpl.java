@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 
 @Slf4j
@@ -47,9 +49,10 @@ public class AuthServiceImpl implements AuthService {
     public LoginResponse login(LoginRequest loginRequest, HttpServletResponse response) {
         log.info("Login request received for email: {}", loginRequest.email());
 
-        Member member = memberRepository.findByEmail(loginRequest.email()).orElseThrow();
-
         try {
+            Member member = memberRepository.findByEmail(loginRequest.email())
+                    .orElseThrow(() -> new BadCredentialsException("User not found"));
+
             // 사용자 인증
             Authentication authentication = authenticateUser(member.getId(), loginRequest.memberPassword());
 
@@ -62,14 +65,17 @@ public class AuthServiceImpl implements AuthService {
             Long memberId = userDetails.getMemberId();
 
             // JWT 토큰 생성 및 쿠키 설정
-            createAndSetTokens(memberId, loginRequest.email(),response);
+            createAndSetTokens(memberId, loginRequest.email(), response);
 
-        } catch (AuthenticationException e) {
+            return LoginResponse.of(member);
+
+        } catch (BadCredentialsException e) {
             log.error("Authentication failed: {}", e.getMessage());
-            throw new BadCredentialsException("Invalid email or password");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid email or password");
+        } catch (Exception e) {
+            log.error("Unexpected error during login: {}", e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
         }
-
-        return LoginResponse.of(member);
     }
 
     private Authentication authenticateUser(Long memberId, String password) {
