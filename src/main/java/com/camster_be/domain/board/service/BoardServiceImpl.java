@@ -6,7 +6,6 @@ import com.camster_be.domain.board.entity.Board;
 import com.camster_be.domain.board.repository.BoardRepository;
 import com.camster_be.domain.member.entity.Member;
 import com.camster_be.domain.member.repository.MemberRepository;
-import com.camster_be.domain.study.repository.StudyRepository;
 import com.camster_be.domain.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

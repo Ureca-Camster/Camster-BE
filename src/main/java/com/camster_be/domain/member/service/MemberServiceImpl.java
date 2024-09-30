@@ -5,6 +5,7 @@ import com.camster_be.domain.member.dto.request.RegisterRequest;
 import com.camster_be.domain.member.dto.response.MemberResponse;
 import com.camster_be.domain.member.entity.Member;
 import com.camster_be.domain.member.repository.MemberRepository;
+import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,8 +44,15 @@ public class MemberServiceImpl implements MemberService {
     public MemberResponse updateMember(MemberUpdateRequest request) {
         Long memberId = SecurityUtils.getMemberId();
         Member member = memberRepository.findById(memberId).orElse(null);
-        String encodePassword = passwordEncoder.encode(request.memberPassword());
-        member.updateMember(request.nickname(), encodePassword, request.goalTime());
+
+        String passwordToUpdate;
+        if (StringUtils.isBlank(request.memberPassword())) {
+            passwordToUpdate = null;  // or "" if you prefer
+        } else {
+            passwordToUpdate = passwordEncoder.encode(request.memberPassword());
+        }
+
+        member.updateMember(request.nickname(), passwordToUpdate, request.goalTime());
         return MemberResponse.of(member);
     }
 

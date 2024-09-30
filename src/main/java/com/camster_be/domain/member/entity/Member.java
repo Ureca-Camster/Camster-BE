@@ -1,15 +1,9 @@
 package com.camster_be.domain.member.entity;
 
-import com.camster_be.domain.member.dto.request.MemberUpdateRequest;
-import com.camster_be.domain.study.entity.StudyMember;
 import io.micrometer.common.util.StringUtils;
-import io.netty.util.internal.StringUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter

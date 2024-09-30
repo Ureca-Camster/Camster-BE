@@ -2,7 +2,6 @@ package com.camster_be.domain.board.controller;
 
 import com.camster_be.domain.board.dto.request.CommentRequest;
 import com.camster_be.domain.board.entity.Comment;
-import com.camster_be.domain.board.service.BoardServiceImpl;
 import com.camster_be.domain.board.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

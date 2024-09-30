@@ -1,9 +1,7 @@
 package com.camster_be.domain.board.service;
 
 import com.camster_be.domain.board.dto.request.CommentRequest;
-import com.camster_be.domain.board.entity.Board;
 import com.camster_be.domain.board.entity.Comment;
-import com.camster_be.domain.board.repository.BoardRepository;
 import com.camster_be.domain.board.repository.CommentRepository;
 import com.camster_be.domain.member.entity.Member;
 import com.camster_be.domain.member.repository.MemberRepository;
