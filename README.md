@@ -11,7 +11,7 @@ git clone https://github.com/Ureca-Camster/Camster-BE.git
 
 ## choco 사용 redis 설치
 - `choco install redis`
-- 터미널 열기 -> `redis-server` 입력 -> 새 터미널 열기 -> `redis-cli` 입력
+- 터미널 열기 -> `redis-server` 입력 ( -> 새 터미널 열기 -> `redis-cli` 입력 )
 
 ## Docker에서 OpenVidu server
 ```angular2html
